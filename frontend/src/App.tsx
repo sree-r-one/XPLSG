@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, About, Contact, NotFound } from "./pages";
+import { Home, About, Contact, NotFound, Explore } from "./pages";
 import { Navbar, Footer } from "./components";
 
 const App: React.FC = () => {
@@ -16,6 +16,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/explore" element={<Explore />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
