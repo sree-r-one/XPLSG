@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
             </div>
             <div className="hidden justify-end pr-16 sm:flex lg:pr-0">
               <Link
-                to="/signin"
+                to="/login"
                 className="text-dark hover:text-primary px-7 py-3 text-base font-medium dark:text-white"
               >
                 Sign in
