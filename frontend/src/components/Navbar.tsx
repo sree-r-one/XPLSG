@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
   return (
     <Disclosure
       as="nav"
-      className="dark:bg-xploreSGDark bg-white dark:text-white"
+      className="dark:bg-xploreSGDark fixed top-0 z-50 w-full bg-white shadow-md dark:text-white"
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
