@@ -18,7 +18,7 @@ export default function TravelerSelector() {
   const [selected, setSelected] = useState(travelerOptions[0]);
 
   return (
-    <div className="w-full bg-white px-4 py-8 text-gray-800 dark:bg-xploreSGLight dark:text-gray-200">
+    <div className="w-full px-4 py-8 text-gray-800">
       <h1 className="flex items-center justify-center pb-4 text-2xl font-bold">
         Who is Travelling?
       </h1>

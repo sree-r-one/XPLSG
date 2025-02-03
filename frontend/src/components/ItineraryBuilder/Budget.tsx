@@ -17,7 +17,7 @@ export default function Budget() {
   const [selected, setSelected] = useState(budgetOptions[0]);
 
   return (
-    <div className="w-full bg-white px-4 py-8 text-gray-800 dark:bg-xploreSGLight dark:text-gray-200">
+    <div className="w-full px-4 py-8">
       <h1 className="flex items-center justify-center pb-4 text-2xl font-bold">
         Budget
       </h1>

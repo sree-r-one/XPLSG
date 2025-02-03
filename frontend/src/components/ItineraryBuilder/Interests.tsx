@@ -36,7 +36,7 @@ export default function Interests() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl bg-white px-4 py-8 text-gray-800 dark:bg-xploreSGLight dark:text-gray-200">
+    <div className="mx-auto max-w-7xl px-4 py-8">
       <h1 className="flex items-center justify-center pb-4 text-2xl font-bold">
         Interests
       </h1>

@@ -9,7 +9,7 @@ export default function TravelDates() {
   const [dates, setDates] = useState<Date[]>([]);
 
   return (
-    <div className="mx-auto w-full max-w-md rounded-lg bg-white p-6 shadow-md dark:bg-gray-900 dark:text-white">
+    <div className="mx-auto w-full max-w-md rounded-lg bg-white p-6 shadow-md">
       <h1 className="flex items-center justify-center pb-4 text-2xl font-bold">
         Travel Dates
       </h1>
