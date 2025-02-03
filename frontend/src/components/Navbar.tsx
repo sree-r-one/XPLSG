@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
 
               <button
                 type="button"
-                className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:bg-gray-800 dark:text-white"
+                className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:bg-xploreSGLight dark:text-white"
               >
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">View notifications</span>
