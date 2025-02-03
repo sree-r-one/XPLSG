@@ -1,5 +1,5 @@
 import React from "react";
-import { Footer } from "../components";
+import { Footer, Features } from "../components";
 
 const Home: React.FC = () => {
   return (
@@ -58,6 +58,7 @@ const Home: React.FC = () => {
           />
         </div>
       </div>
+      <Features />
       <Footer />
     </>
   );
