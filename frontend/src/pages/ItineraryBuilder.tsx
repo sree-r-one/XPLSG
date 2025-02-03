@@ -1,11 +1,18 @@
-import { TravelerSelector } from "../components/ItineraryBuilder";
-import TravelDates from "../components/ItineraryBuilder/TravelDates";
+import {
+  TravelerSelector,
+  TravelDates,
+  Budget,
+  Interests,
+} from "../components/ItineraryBuilder";
+// import TravelDates from "../components/ItineraryBuilder/TravelDates";
 const ItineraryBuilder = () => {
   return (
     <div>
       ItineraryBuilder
       <TravelerSelector />
       <TravelDates />
+      <Budget />
+      <Interests />
     </div>
   );
 };
