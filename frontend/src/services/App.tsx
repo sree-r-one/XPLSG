@@ -7,8 +7,9 @@ const App: React.FC = () => {
     <div className="">
       <BrowserRouter>
         <Navbar />
-        <main className="min-h-screen bg-red-400 p-4">
-          <div className="mx-auto max-w-6xl">
+
+        <main className="bg-red-400">
+          <div className="">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
