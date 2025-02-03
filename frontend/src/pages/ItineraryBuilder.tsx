@@ -6,6 +6,7 @@ import {
 } from "../components/ItineraryBuilder";
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
+import progressGif from "../assets/progress.gif";
 
 const ItineraryBuilder = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,10 +66,17 @@ const ItineraryBuilder = () => {
             <Dialog.Title className="text-2xl font-bold text-gray-900">
               Itinerary is being built!
             </Dialog.Title>
-            <p className="mt-2 text-gray-700">
-              Your personalized itinerary has been successfully built. You can
-              now review it or make any necessary adjustments.
-            </p>
+            <div className="mt-4 flex justify-center">
+              <img
+                src={progressGif}
+                alt="Loading progress"
+                className="h-24 w-24"
+              />
+              <p className="mt-2 pl-4 text-gray-700">
+                Your personalized itinerary has been successfully built. You can
+                now review it or make any necessary adjustments.
+              </p>
+            </div>
             <div className="mt-4 flex justify-end">
               <button
                 onClick={closeModal}
