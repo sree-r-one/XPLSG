@@ -1,17 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home, About, Contact, NotFound, Explore, Login } from "./pages";
-import { Navbar, Footer } from "./components";
+import { Navbar } from "./components";
 
 const App: React.FC = () => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="">
       <BrowserRouter>
-        {/* Navbar */}
         <Navbar />
 
-        {/* Main Content */}
-        <main className="flex-grow">
-          <div className="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 lg:px-8">
+        <main className="">
+          <div className="">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -22,9 +20,6 @@ const App: React.FC = () => {
             </Routes>
           </div>
         </main>
-
-        {/* Footer */}
-        <Footer />
       </BrowserRouter>
     </div>
   );
