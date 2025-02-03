@@ -22,8 +22,9 @@ export default function TravelDates() {
             minDate: "today",
           }}
           value={dates}
+          placeholder="Select dates"
           onChange={(selectedDates: Date[]) => setDates(selectedDates)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-orange-500 dark:bg-gray-800 dark:text-white"
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-offset-xploreSGDark dark:bg-gray-800 dark:text-white"
         />
       </div>
 
