@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import geoJsonData from "../data/places.geojson";
+import { FeatureCollection, Point } from "geojson";
 
 const INITIAL_CENTER: [number, number] = [103.7972, 1.3552];
 const INITIAL_ZOOM: number = 10.8;
@@ -15,37 +17,62 @@ const Explore: React.FC = () => {
   useEffect(() => {
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string;
 
-    mapRef.current = new mapboxgl.Map({
-      container: mapContainerRef.current as HTMLDivElement,
-      // style: "mapbox://styles/mapbox/streets-v11",
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: center,
-      zoom: zoom,
-    });
+    if (mapContainerRef.current) {
+      mapRef.current = new mapboxgl.Map({
+        container: mapContainerRef.current as HTMLDivElement,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: INITIAL_CENTER,
+        zoom: INITIAL_ZOOM,
+      });
 
-    mapRef.current.on("move", () => {
-      // get the current center coordinates and zoom level from the map
-      const mapCenter = mapRef.current?.getCenter();
-      const mapZoom = mapRef.current?.getZoom();
+      mapRef.current.on("move", () => {
+        const mapCenter = mapRef.current?.getCenter();
+        const mapZoom = mapRef.current?.getZoom();
+        if (mapCenter && mapZoom !== undefined) {
+          setCenter([mapCenter.lng, mapCenter.lat]);
+          setZoom(mapZoom);
+        }
+      });
 
-      // update state
-      if (mapCenter && mapZoom !== undefined) {
-        setCenter([mapCenter.lng, mapCenter.lat]);
-        setZoom(mapZoom);
-      }
-    });
+      // Add markers from GeoJSON data
+      geoJsonData.features.forEach((feature) => {
+        const { coordinates } = feature.geometry as Point;
+        // const { name, description } = feature.properties as {
+        //   name: string;
+        //   description: string;
+        // };
+        // Ensure coordinates is of type [number, number]
+        const lngLatCoordinates: [number, number] = [
+          coordinates[0],
+          coordinates[1],
+        ];
 
-    new mapboxgl.Marker().setLngLat(INITIAL_CENTER).addTo(mapRef.current);
+        const { name, description } = feature.properties as {
+          name: string;
+          description: string;
+        };
+
+        if (mapRef.current) {
+          new mapboxgl.Marker()
+            .setLngLat(lngLatCoordinates)
+            .setPopup(
+              new mapboxgl.Popup({ offset: 25 }).setHTML(
+                `<h3>${name}</h3><p>${description}</p>`,
+              ),
+            )
+            .addTo(mapRef.current);
+        }
+      });
+    }
 
     return () => {
-      mapRef.current?.remove(); // Safely clean up map instance
+      mapRef.current?.remove(); // Clean up map instance
     };
-    // return () => mapRef.current.colorremove();
   }, []);
 
   const resetMap = () => {
     mapRef.current?.flyTo({
-      center: INITIAL_CENTER, // Example coordinates
+      center: INITIAL_CENTER,
       zoom: INITIAL_ZOOM,
     });
   };
@@ -58,6 +85,7 @@ const Explore: React.FC = () => {
         <button
           onClick={resetMap}
           className="ml-4 rounded bg-blue-600 px-2 py-1 text-white hover:bg-blue-500"
+          aria-label="Reset map to initial view"
         >
           Reset Map
         </button>
