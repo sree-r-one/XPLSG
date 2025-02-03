@@ -7,6 +7,7 @@ import {
   Explore,
   Login,
   Profile,
+  ItineraryBuilder,
 } from "./pages";
 import { Navbar } from "./components";
 import "./App.css";
@@ -48,6 +49,7 @@ const App: React.FC = () => {
               path="/profile"
               element={<Profile applicant={applicantData} />}
             />
+            <Route path="/itinerary" element={<ItineraryBuilder />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
