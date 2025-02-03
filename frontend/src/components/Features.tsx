@@ -1,7 +1,5 @@
 import {
-  ArrowPathIcon,
   CloudArrowUpIcon,
-  FingerPrintIcon,
   LockClosedIcon,
   MapPinIcon,
   TicketIcon,
