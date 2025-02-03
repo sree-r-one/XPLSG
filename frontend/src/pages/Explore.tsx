@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import geoJsonData from "../data/places.geojson";
-import { FeatureCollection, Point } from "geojson";
+import { Point } from "geojson";
 
 const INITIAL_CENTER: [number, number] = [103.7972, 1.3552];
 const INITIAL_ZOOM: number = 10.8;
