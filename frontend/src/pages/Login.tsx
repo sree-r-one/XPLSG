@@ -8,7 +8,7 @@ const Login: React.FC = () => {
   // Form submission handler
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", { email, password });
+    console.log("Form submitted with email:", email);
     // Implement API call or sign-in logic here
   };
 
