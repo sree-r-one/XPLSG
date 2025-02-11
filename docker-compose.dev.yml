@@ -19,7 +19,7 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./backend/fastapi
       dockerfile: Dockerfile.dev # Specify the development Dockerfile
     container_name: backend-xploresg-dev
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
