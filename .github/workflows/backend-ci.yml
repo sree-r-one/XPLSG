@@ -4,18 +4,18 @@ on:
   push:
     branches:
       - master
-      - "XPLSG-**" # This will trigger the workflow for all branches that start with XPLSG-
+      - "feature/XPLSG-**" # This will trigger the workflow for all branches that start with XPLSG-
     # paths:
     #   - backend/** # This will trigger the workflow for all changes in the frontend directory
   pull_request:
     branches:
       - master
-      - "XPLSG-**" # This will trigger the workflow for all branches that start with XPLSG-
+      - "feature/XPLSG-**" # This will trigger the workflow for all branches that start with XPLSG-
     # paths:
     #   - backend/** # This will trigger the workflow for all changes in the frontend directory
 
 jobs:
-  backend-tests:
+  fastapi-tests:
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
@@ -31,11 +31,32 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
-          cd backend
+          cd backend/fastapi
           pip install -r requirements.txt
 
       # Run tests
       - name: Run tests
         run: |
-          cd backend
+          cd backend/fastapi
           pytest
+
+  express-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          cd backend/services/user
+          npm install
+
+      - name: Run tests
+        run: |
+          cd backend/services/user
+          npm run test

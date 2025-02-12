@@ -14,24 +14,47 @@ services:
 
     networks:
       - mynetwork
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
 
-  backend:
+  user-service:
     build:
-      context: ./backend
+      context: ./backend/services/user
       dockerfile: Dockerfile.dev # Specify the development Dockerfile
-    container_name: backend-xploresg-dev
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    ports:
-      - "8000:8000"
+    container_name: user-service-xploresg-dev
+    env_file:
+      - ./backend/services/user/.env
+    # volumes:
+    #   - ./backend/services/user:/app
+    #   - /app/node_modules
     volumes:
-      - ./backend:/app
+      - ./backend/services/user:/app
+      - user_node_modules:/app/node_modules
+
     networks:
       - mynetwork
+    ports:
+      - "4000:4000"
+    # environment:
+    #   - PORT=4000
+    #   - JWT_SECRET=mysecret
+
+  # backend:
+  #   build:
+  #     context: ./backend/fastapi
+  #     dockerfile: Dockerfile.dev # Specify the development Dockerfile
+  #   container_name: backend-xploresg-dev
+  #   command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./backend:/app
+  #   networks:
+  #     - mynetwork
 
 volumes:
   frontend_node_modules:
+  user_node_modules:
 
 networks:
   mynetwork:
