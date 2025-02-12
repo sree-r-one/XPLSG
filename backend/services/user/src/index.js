@@ -33,7 +33,7 @@ app.post("/login", (req, res) => {
 
   // If the user is not found or the password is incorrect
   if (!user) {
-    return res.json(401).json({ message: "Invalid username or password" });
+    return res.status(401).json({ message: "Invalid username or password" });
   }
 
   // Generate a JWT token
@@ -44,6 +44,11 @@ app.post("/login", (req, res) => {
   // Send the token as response
   res.json({ token });
 });
+
+// Add Testing Mode
+if (process.env.NODE_ENV === "test") {
+  module.exports = app;
+}
 
 app.listen(PORT, HOST, () => {
   // Ensure it binds to 0.0.0.0
