@@ -2,7 +2,6 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import "@testing-library/jest-dom";
-// import Footer from "./Footer";
 import Footer from "../../src/components/Footer";
 import { socialMediaLinks, footerLinks } from "../../src/data/footerContent";
 
