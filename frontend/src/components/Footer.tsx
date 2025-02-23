@@ -1,4 +1,3 @@
-import React from "react";
 import { socialMediaLinks, footerLinks } from "../data/footerContent";
 
 const Footer: React.FC = () => {
