@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - master
-      - "XPLSG-**" # This will trigger the workflow for all branches that start with XPLSG-
+      - "feature/**" # This will trigger the workflow for all branches that start with XPLSG-
     # paths:
     #   - frontend/** # This will trigger the workflow for all changes in the frontend directory
   pull_request:
     branches:
       - master
-      - "XPLSG-**" # This will trigger the workflow for all branches that start with XPLSG-
+      - "feature/**" # This will trigger the workflow for all branches that start with XPLSG-
     # paths:
     #   - frontend/** # This will trigger the workflow for all changes in the frontend directory
 
@@ -33,6 +33,11 @@ jobs:
         run: |
           cd frontend
           npm install
+
+      - name: Run Unit Tests with Vitest
+        run: |
+          cd frontend
+          npm run test
 
       # Build the frontend
       - name: Build frontend
