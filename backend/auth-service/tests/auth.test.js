@@ -2,6 +2,14 @@ const request = require("supertest");
 const app = require("../server"); // Import Express app
 
 describe("User Registration API", () => {
+  // Mock user data
+  let testUser = { email: "existing@example.com", password: "Test123!" };
+
+  beforeEach(() => {
+    // Clear user storage before each test
+    users.length = 0;
+  });
+
   test("✅ Should register a new user with valid details", async () => {
     const res = await request(app).post("/auth/register").send({
       email: "testuser@example.com",
