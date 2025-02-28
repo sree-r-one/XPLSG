@@ -1,0 +1,21 @@
+# Contents of /backend/services/auth/.dockerignore
+
+node_modules
+npm-debug.log
+Dockerfile
+docker-compose.yml
+.env
+README.md
+.git
+.gitignore
+*.md
+*.log
+*.test.js
+*.spec.js
+dist
+build
+coverage
+.vscode
+.idea
+*.swp
+*.swo

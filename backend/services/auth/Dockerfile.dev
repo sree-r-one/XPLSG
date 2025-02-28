@@ -1,0 +1,30 @@
+# Use Node image as base image
+FROM node:20-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy Package into the files first to optimise Caching
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Install Nodemon for auto-reloading in development
+RUN npm install -g nodemon
+
+# Copy the entire source code into the working directory
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 4000
+
+# # Start the application in development mode
+# CMD ["nodemon", "server.js"]
+
+# Health check to ensure the service is running
+# HEALTHCHECK --interval=60s --timeout=10s --retries=3 \
+#   CMD curl -f http://localhost:4000/health || exit 1
+  
+# Start the application in development mode with polling enabled
+CMD ["npx", "nodemon", "--legacy-watch", "--inspect=0.0.0.0", "server.js"]
