@@ -10,14 +10,17 @@ COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm install
 
+# Install Nodemon for auto-reloading in development
+RUN npm install -g nodemon
+
 # Copy the entire source code into the working directory
 COPY . .
 
 # Expose the port the app runs on
 EXPOSE 4000
 
-# Install Nodemon for auto-reloading in development
-RUN npm install -g nodemon
+# # Start the application in development mode
+# CMD ["nodemon", "server.js"]
 
-# Start the application in development mode
-CMD ["nodemon", "src/index.js"]
+# Start the application in development mode with polling enabled
+CMD ["npx", "nodemon", "--legacy-watch", "--inspect=0.0.0.0", "server.js"]

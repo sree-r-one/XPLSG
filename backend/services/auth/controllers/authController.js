@@ -73,5 +73,6 @@ exports.updatePassword = (req, res) => {
 };
 
 exports.getProfile = (req, res) => {
-  res.status(200).send("Profile Route");
+  // res.status(200).send("Profile Route");
+  res.status(200).json({ message: "Profile Route is here" });
 };
