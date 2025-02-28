@@ -53,10 +53,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend/services/user
+          cd backend/services/auth
           npm install
 
       - name: Run tests
         run: |
-          cd backend/services/user
+          cd backend/services/auth
           npm run test
