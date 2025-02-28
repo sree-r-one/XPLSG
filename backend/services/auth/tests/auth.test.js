@@ -1,5 +1,29 @@
 const request = require("supertest");
-const app = require("../server"); // Import Express app
+const mongoose = require("mongoose");
+const { MongoMemoryServer } = require("mongodb-memory-server");
+const app = require("../server");
+const User = require("../models/User");
+
+let mongoServer;
+
+beforeAll(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+});
+
+afterEach(async () => {
+  await User.deleteMany(); // Clear database between tests
+});
+
+afterAll(async () => {
+  await mongoose.connection.close();
+  await mongoServer.stop();
+});
 
 describe("User Registration API", () => {
   let users = [];
