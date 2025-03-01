@@ -9,7 +9,7 @@ import {
   Profile,
   ItineraryBuilder,
 } from "./pages";
-import { Navbar } from "./components";
+import { Navbar, GoogleAuthButton } from "./components";
 import "./App.css";
 
 const applicantData = {
@@ -54,6 +54,7 @@ const App: React.FC = () => {
           </Routes>
         </main>
       </BrowserRouter>
+      <GoogleAuthButton />
     </div>
   );
 };
