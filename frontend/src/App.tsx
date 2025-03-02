@@ -11,6 +11,8 @@ import {
 } from "./pages";
 import { Navbar, GoogleAuthButton } from "./components";
 import "./App.css";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 const applicantData = {
   fullName: "Margot Foster",
@@ -35,7 +37,7 @@ const applicantData = {
 
 const App: React.FC = () => {
   return (
-    <div>
+    <AuthProvider>
       <BrowserRouter>
         <Navbar />
         <main className="mt-16">
@@ -45,17 +47,20 @@ const App: React.FC = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/profile"
-              element={<Profile applicant={applicantData} />}
-            />
-            <Route path="/itinerary" element={<ItineraryBuilder />} />
+
+            <Route element={<ProtectedRoute />}>
+              <Route
+                path="/profile"
+                element={<Profile applicant={applicantData} />}
+              />
+              <Route path="/itinerary" element={<ItineraryBuilder />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </BrowserRouter>
-      <GoogleAuthButton />
-    </div>
+      {/* <GoogleAuthButton /> */}
+    </AuthProvider>
   );
 };
 
