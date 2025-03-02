@@ -1,7 +1,7 @@
 import { PaperClipIcon } from "@heroicons/react/20/solid";
 import React from "react";
+import { useAuth } from "../context/AuthContext";
 
-// Define types for props
 interface Attachment {
   name: string;
   size: string;
@@ -20,6 +20,8 @@ interface ApplicantDetailsProps {
 }
 
 const Profile: React.FC<ApplicantDetailsProps> = ({ applicant }) => {
+  const { user } = useAuth();
+
   return (
     <div className="mx-auto max-w-6xl items-center justify-center px-4 py-6 sm:px-6 lg:px-8">
       {/* Header */}
@@ -39,7 +41,7 @@ const Profile: React.FC<ApplicantDetailsProps> = ({ applicant }) => {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium text-gray-900">Full name</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-              {applicant.fullName}
+              {user ? user.name : "N/A"}
             </dd>
           </div>
 
@@ -57,7 +59,7 @@ const Profile: React.FC<ApplicantDetailsProps> = ({ applicant }) => {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium text-gray-900">Email address</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
-              {applicant.email}
+              {user?.email}
             </dd>
           </div>
 

@@ -9,14 +9,16 @@ const {
   getProfile,
 } = require("../controllers/authController");
 
+const { authenticateToken } = require("../middleware/authMiddleware"); // Import auth middleware
+
 const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/logout", logoutUser);
+router.post("/logout", authenticateToken, logoutUser);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword/:resetToken", resetPassword);
-router.put("/updatepassword", updatePassword);
-router.get("/me", getProfile);
+router.put("/updatepassword", authenticateToken, updatePassword);
+router.get("/me", authenticateToken, getProfile);
 
 module.exports = router;
