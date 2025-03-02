@@ -7,11 +7,13 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
           {/* Logo and description */}
           <div className="space-y-4">
-            <img
+            {/* <img
               src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
               alt="Explore Singapore"
               className="h-8 w-auto"
-            />
+            /> */}
+            <h3 className="text-lg font-bold">XPLSG</h3>
+
             <p className="text-sm font-extralight text-gray-600 dark:text-gray-400">
               Discover the beauty of Singapore through curated itineraries and
               personalized trip planning.

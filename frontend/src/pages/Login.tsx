@@ -5,6 +5,7 @@ const Login: React.FC = () => {
   // State to store user input
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  // ✅ Use the `useAuth` hook to access the `login` function
 
   // Form submission handler
   const handleSubmit = (e: FormEvent) => {

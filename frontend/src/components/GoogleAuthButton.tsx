@@ -1,35 +1,40 @@
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-// import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const GoogleAuthButton: React.FC = () => {
-  // ✅ Use the `useAuth` hook to access the `login` function
-  // const { login } = useAuth();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  // ✅ Use the `useAuth` hook to access the `login` function
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
-    // Check if the credential is received
     if (!credentialResponse.credential) {
       console.error("Google authentication failed: No credential received");
       return;
     }
 
-    // Log the credential response
-    console.log("Google Login Success:", credentialResponse);
-    console.log("Google Login Details", credentialResponse.credential);
-
-    // Send the ID token to the backend
     try {
-      const res = await fetch("http://localhost:4000/auth/google-auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: credentialResponse.credential }), // ✅ Send ID token to backend
-      });
+      const {
+        email,
+        name = "Google User",
+        picture,
+      } = jwtDecode<{
+        email: string;
+        name?: string;
+        picture?: string;
+      }>(credentialResponse.credential);
 
-      const data = await res.json();
-      console.log("Backend Response:", data);
-      localStorage.setItem("token", data.token); // ✅ Store JWT token
+      console.log("Google Login email", email);
+      console.log("Google Login name", name);
+      console.log("Google Login picture", picture);
+
+      const googleIdToken = credentialResponse.credential;
+      login(googleIdToken, { email, name, picture: picture || "" });
+
+      // Redirect to the profile page
+      navigate("/profile");
     } catch (error) {
-      console.error("Google Auth Error:", error);
+      console.error("Failed to decode Google token:", error);
     }
   };
 

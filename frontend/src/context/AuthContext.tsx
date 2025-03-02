@@ -4,6 +4,7 @@ type User = {
   id?: string;
   name?: string;
   email: string;
+  picture?: string;
 };
 
 // Define Auth Context Type
@@ -26,17 +27,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
-  //   Load token and user data from local storage
+  // Load token and user data from local storage
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
     const storedUser = localStorage.getItem("authUser");
 
     if (storedToken && storedUser) {
       try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
+        // Set token and user data from local storage
+        const parsedUser = JSON.parse(storedUser);
+
+        // Check if the user data is valid
+        if (parsedUser && parsedUser.email) {
+          setUser(parsedUser);
+          setToken(storedToken);
+        } else {
+          // Clear invalid user data
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("authUser");
+        }
       } catch (error) {
-        console.log("Failed to parse user data", error);
+        console.error("Failed to parse user data", error);
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("authUser");
       }
     }
   }, []);
