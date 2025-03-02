@@ -9,7 +9,7 @@ import {
   Profile,
   ItineraryBuilder,
 } from "./pages";
-import { Navbar, GoogleAuthButton } from "./components";
+import { Navbar } from "./components";
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
