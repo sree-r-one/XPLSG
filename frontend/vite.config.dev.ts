@@ -27,8 +27,14 @@ export default defineConfig(({ mode }) => {
         usePolling: true, // Ensures file changes are detected inside Docker
         interval: 100,
       },
+      proxy: {
+        "/api": {
+          target: "http://localhost:4000", // Redirect API calls to Express backend
+          changeOrigin: true,
+          secure: false,
+        },
+      },
       headers: {
-        // "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
         "Cross-Origin-Opener-Policy": "unsafe-none", // Disable COOP to allow OAuth
         "Cross-Origin-Embedder-Policy": "require-corp",
         "Cross-Origin-Resource-Policy": "cross-origin",
