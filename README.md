@@ -9,16 +9,17 @@
 - [Project Structure](#project-structure)
 - [Contribution Guidelines](#contribution-guidelines)
 
-
 ## Overview
 
 The Explore Singapore Application is a group project designed as part of a NUS Mtech Module SWE5006. The goal is to provide users with personalized itineraries and suggestions to explore Singapore's landmarks, attractions, and cultural hotspots. Leveraging AI-powered features, the app aims to offer unique and tailored experiences to both locals and tourists.
 
 This repository includes:
+
 1. A frontend built with React, TypeScript, and Tailwind CSS using Vite for rapid development and hot module replacement.
 2. A backend built with Python and FastAPI, containerized using Docker. It exposes API endpoints to serve data and handle AI-powered itinerary logic (e.g., calls to OpenAI APIs).
 
 ## Features
+
 - **Custom Itineraries:** Generate personalized day-by-day travel plans in JSON format.
 - **Attraction Recommendations:** Get curated suggestions based on user preferences.
 - **Interactive UI:** Seamless navigation and engaging user experience powered by React and TypeScript.
@@ -38,22 +39,24 @@ This repository includes:
 3. Run the application using Docker Compose:
    ```bash
    docker-compose -f docker-compose.dev.yml up --build
+   docker-compose -f docker-compose.prod.yml up --build
    ```
-
-
 
 ## Tech Stack
 
-**Frontend:** 
+**Frontend:**
+
 - React
 - TypeScript
 - Vite
 - Tailwind CSS
 
-**AI Features:** 
+**AI Features:**
+
 - OpenAI GPT-based APIs
-  
+
 **Backend:**
+
 - Python 3.10+
 - FastAPI for building RESTful APIs
 - Uvicorn (development) or Gunicorn + Uvicorn workers (production)
@@ -98,6 +101,7 @@ explore-singapore/
 ## Contribution Guidelines
 
 As this is a group project, the following guidelines should be followed:
+
 1. Each member should work on their assigned tasks and maintain clear communication with the team.
 2. Use meaningful commit messages when pushing code.
 3. Create a pull request and request a review from at least one team member before merging changes.

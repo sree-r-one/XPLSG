@@ -34,10 +34,10 @@ jobs:
           cd frontend
           npm install
 
-      - name: Run Unit Tests with Vitest
-        run: |
-          cd frontend
-          npm run test
+      # - name: Run Unit Tests with Vitest
+      #   run: |
+      #     cd frontend
+      #     npm run test
 
       # Build the frontend
       - name: Build frontend

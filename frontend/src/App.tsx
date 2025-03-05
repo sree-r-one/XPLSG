@@ -13,6 +13,7 @@ import { Navbar } from "./components";
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import HealthCheck from "./components/HealthCheck";
 
 const applicantData = {
   fullName: "Margot Foster",
@@ -41,6 +42,7 @@ const App: React.FC = () => {
       <BrowserRouter>
         <Navbar />
         <main className="mt-16">
+          <HealthCheck />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
