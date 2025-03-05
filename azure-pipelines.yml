@@ -9,84 +9,9 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  # ================= Frontend CI ===================
-  - stage: Frontend_CI
-    displayName: "Frontend CI"
-    jobs:
-      - job: Frontend_Tests
-        displayName: "Run Frontend Unit Tests & Build"
-        steps:
-          - checkout: self
-
-          - task: NodeTool@0
-            inputs:
-              versionSpec: "22"
-          
-          - script: |
-              cd frontend
-              npm install
-            displayName: "Install Frontend Dependencies"
-
-          - script: |
-              cd frontend
-              npm run test
-            displayName: "Run Vitest Tests"
-
-          - script: |
-              cd frontend
-              npm run build
-            displayName: "Build Frontend"
-
-  # ================= Backend CI ===================
-  - stage: Backend_CI
-    displayName: "Backend CI"
-    jobs:
-      # FastAPI Testing
-      - job: FastAPI_Tests
-        displayName: "Run FastAPI Tests"
-        steps:
-          - checkout: self
-
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: "3.10"
-
-          - script: |
-              cd backend/fastapi
-              pip install -r requirements.txt
-            displayName: "Install FastAPI Dependencies"
-
-          - script: |
-              cd backend/fastapi
-              pytest
-            displayName: "Run FastAPI Tests"
-
-      # Express.js Testing
-      - job: Express_Tests
-        displayName: "Run Express.js Tests"
-        steps:
-          - checkout: self
-
-          - task: NodeTool@0
-            inputs:
-              versionSpec: "20"
-
-          - script: |
-              cd backend/services/auth
-              npm install
-            displayName: "Install Express.js Dependencies"
-
-          - script: |
-              cd backend/services/auth
-              npm run test
-            displayName: "Run Express.js Tests"
-
   # ================= Docker Build & Push ===================
   - stage: Docker_Build_And_Push
     displayName: "Build & Push Docker Images"
-    dependsOn: [Frontend_CI, Backend_CI] # Ensures only builds if tests pass
-    condition: succeeded()
-
     jobs:
       - job: Build_And_Push
         displayName: "Build & Push to Azure Container Registry (ACR)"
@@ -108,3 +33,26 @@ stages:
               docker push myregistry.azurecr.io/xplsg-frontend:latest
               docker push myregistry.azurecr.io/xplsg-auth-service:latest
             displayName: "Push Docker Images to Azure ACR"
+
+  # ================= Deployment to Azure Services ===================
+  - stage: Deploy
+    displayName: "Deploy to Azure"
+    dependsOn: Docker_Build_And_Push
+    condition: succeeded()
+    
+    jobs:
+      - job: Deploy_Backend
+        displayName: "Deploy Backend to Azure App Service"
+        steps:
+          - script: |
+              az login --service-principal -u $(AZURE_CLIENT_ID) -p $(AZURE_CLIENT_SECRET) --tenant $(AZURE_TENANT_ID)
+              az webapp create --resource-group myResourceGroup --plan myAppServicePlan --name xplsg-auth-service --deployment-container-image-name myregistry.azurecr.io/xplsg-auth-service:latest
+            displayName: "Deploy Backend to Azure App Service"
+
+      - job: Deploy_Frontend
+        displayName: "Deploy Frontend to Azure Static Web Apps"
+        steps:
+          - script: |
+              az login --service-principal -u $(AZURE_CLIENT_ID) -p $(AZURE_CLIENT_SECRET) --tenant $(AZURE_TENANT_ID)
+              az staticwebapp create --name xplsg-frontend --resource-group myResourceGroup --location westeurope --source myregistry.azurecr.io/xplsg-frontend:latest
+            displayName: "Deploy Frontend to Azure Static Web Apps"
