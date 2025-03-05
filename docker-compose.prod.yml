@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile # Use the production Dockerfile with NGINX
+    container_name: frontend-nginx
+    ports:
+      - "3000:80" # Map NGINX to port 3000
+    networks:
+      - mynetwork
+    depends_on:
+      - user-service
+
+  user-service:
+    build:
+      context: ./backend/services/auth
+      dockerfile: Dockerfile # Use the production Dockerfile
+    container_name: auth-service-xploresg-prod
+    env_file:
+      - ./backend/.env
+    networks:
+      - mynetwork
+    ports:
+      - "4000:4000"
+
+networks:
+  mynetwork:
+    driver: bridge

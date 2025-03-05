@@ -19,5 +19,11 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 3000
 
+
+# Set security headers in Vite
+ENV VITE_CROSS_ORIGIN_OPENER_POLICY="same-origin-allow-popups"
+ENV VITE_CROSS_ORIGIN_EMBEDDER_POLICY="require-corp"
+
+
 # Command to run the app in development mode with hot-reloading
 CMD ["npm", "run", "dev"]
