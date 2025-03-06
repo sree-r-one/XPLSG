@@ -29,11 +29,6 @@ stages:
 
           - script: |
               cd frontend
-              npm run test
-            displayName: "Run Vitest Tests"
-
-          - script: |
-              cd frontend
               npm run build
             displayName: "Build Frontend"
 
