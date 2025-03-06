@@ -6,7 +6,7 @@ trigger:
       - feature/XPLSG-*
 
 pool:
-  vmImage: ubuntu-latest
+  name: "Self-Hosted" # Replace with your actual self-hosted agent pool name
 
 stages:
   # ================= Frontend CI ===================
@@ -21,7 +21,7 @@ stages:
           - task: NodeTool@0
             inputs:
               versionSpec: "22"
-          
+
           - script: |
               cd frontend
               npm install
@@ -53,6 +53,7 @@ stages:
 
           - script: |
               cd backend/fastapi
+              python -m pip install --upgrade pip
               pip install -r requirements.txt
             displayName: "Install FastAPI Dependencies"
 
