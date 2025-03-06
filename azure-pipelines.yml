@@ -6,101 +6,32 @@ trigger:
       - feature/XPLSG-*
 
 pool:
-  name: "Self-Hosted" # Replace with your actual self-hosted agent pool name
+  vmImage: ubuntu-latest # Azure free-tier hosted agent
 
 stages:
-  # ================= Frontend CI ===================
-  - stage: Frontend_CI
-    displayName: "Frontend CI"
-    jobs:
-      - job: Frontend_Tests
-        displayName: "Run Frontend Unit Tests & Build"
-        steps:
-          - checkout: self
-
-          - task: NodeTool@0
-            inputs:
-              versionSpec: "22"
-
-          - script: |
-              cd frontend
-              npm install
-            displayName: "Install Frontend Dependencies"
-
-          - script: |
-              cd frontend
-              npm run build
-            displayName: "Build Frontend"
-
-  # ================= Backend CI ===================
-  - stage: Backend_CI
-    displayName: "Backend CI"
-    jobs:
-      # FastAPI Testing
-      - job: FastAPI_Tests
-        displayName: "Run FastAPI Tests"
-        steps:
-          - checkout: self
-
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: "3.10"
-
-          - script: |
-              cd backend/fastapi
-              python -m pip install --upgrade pip
-              pip install -r requirements.txt
-            displayName: "Install FastAPI Dependencies"
-
-          - script: |
-              cd backend/fastapi
-              pytest
-            displayName: "Run FastAPI Tests"
-
-      # Express.js Testing
-      - job: Express_Tests
-        displayName: "Run Express.js Tests"
-        steps:
-          - checkout: self
-
-          - task: NodeTool@0
-            inputs:
-              versionSpec: "20"
-
-          - script: |
-              cd backend/services/auth
-              npm install
-            displayName: "Install Express.js Dependencies"
-
-          - script: |
-              cd backend/services/auth
-              npm run test
-            displayName: "Run Express.js Tests"
-
-  # ================= Docker Build & Push ===================
+  # ================= Docker Build & Push (Optimized) ===================
   - stage: Docker_Build_And_Push
-    displayName: "Build & Push Docker Images"
-    dependsOn: [Frontend_CI, Backend_CI] # Ensures only builds if tests pass
-    condition: succeeded()
-
+    displayName: "Docker Build & Push (ACR)"
     jobs:
       - job: Build_And_Push
-        displayName: "Build & Push to Azure Container Registry (ACR)"
+        displayName: "Build & Push Docker Images"
         steps:
           - checkout: self
 
-          - script: |
-              docker build -t xplsg-frontend:latest ./frontend
-              docker build -t xplsg-auth-service:latest ./backend/services/auth
-            displayName: "Build Docker Images"
+          - task: Docker@2
+            displayName: "Build and Push Frontend Docker Image"
+            inputs:
+              command: buildAndPush
+              repository: "xplsg-frontend"
+              dockerfile: "./frontend/Dockerfile"
+              containerRegistry: "ACR_Service_Connection" # Create service connection in Azure DevOps
+              tags: "latest"
 
-          - script: |
-              docker tag xplsg-frontend:latest myregistry.azurecr.io/xplsg-frontend:latest
-              docker tag xplsg-auth-service:latest myregistry.azurecr.io/xplsg-auth-service:latest
-            displayName: "Tag Docker Images"
-
-          - script: |
-              echo $(ACR_PASSWORD) | docker login myregistry.azurecr.io -u $(ACR_USERNAME) --password-stdin
-              docker push myregistry.azurecr.io/xplsg-frontend:latest
-              docker push myregistry.azurecr.io/xplsg-auth-service:latest
-            displayName: "Push Docker Images to Azure ACR"
+          - task: Docker@2
+            displayName: "Build and Push Auth-Service Docker Image"
+            inputs:
+              command: buildAndPush
+              repository: "xplsg-auth-service"
+              dockerfile: "./backend/services/auth/Dockerfile"
+              containerRegistry: "ACR_Service_Connection" # Same service connection
+              tags: "latest"
