@@ -1,0 +1,16 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: DockerInstaller@0
+    displayName: 'Install Docker'
+    inputs:
+      dockerVersion: 'latest'
+
+  - script: |
+      docker build -t myapp:latest .
+      docker run --rm myapp:latest
+    displayName: 'Build & Test Docker Image'
