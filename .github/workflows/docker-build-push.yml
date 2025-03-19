@@ -1,0 +1,50 @@
+name: Docker Build & Push to ACR
+
+on:
+  #   push:
+  #     branches:
+  #       - master
+  #       - feature/*
+  #       - feature/XPLSG-*
+  pull_request:
+    branches:
+      - master
+      - feature/*
+      - feature/XPLSG-*
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      # Frontend Docker Image
+      - name: Build & Push Frontend Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:latest
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ github.sha }}
+
+      # Auth-Service Docker Image
+      - name: Build & Push Auth-Service Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/services/auth
+          file: ./backend/services/auth/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:latest
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ github.sha }}

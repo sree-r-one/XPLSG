@@ -1,12 +1,12 @@
 name: Frontend-CI
 
 on:
-  push:
-    branches:
-      - master
-      - "feature/**" # This will trigger the workflow for all branches that start with XPLSG-
-    # paths:
-    #   - frontend/** # This will trigger the workflow for all changes in the frontend directory
+  # push:
+  # branches:
+  # - master
+  # - "feature/**" # This will trigger the workflow for all branches that start with XPLSG-
+  # paths:
+  #   - frontend/** # This will trigger the workflow for all changes in the frontend directory
   pull_request:
     branches:
       - master
