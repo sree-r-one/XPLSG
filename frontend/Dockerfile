@@ -15,14 +15,20 @@ COPY . .
 # Build the frontend
 RUN npm run build
 
-# Stage 2: Serve with NGINX
-FROM nginx:alpine
+# Stage 2: Use a lightweight web server
+FROM node:20-alpine
 
-# Fix: Copy NGINX configuration to /etc/nginx/conf.d/
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /usr/src/app
 
-# Copy built frontend files to NGINX static folder
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Install a simple HTTP server
+RUN npm install -g serve
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Copy built frontend files from the builder stage
+COPY --from=builder /app/dist .
+
+# Set the port for Azure (Azure Web App dynamically assigns PORT)
+ENV PORT 8080
+EXPOSE 8080
+
+# Start the static server
+CMD ["serve", "-s", ".", "-l", "8080"]
