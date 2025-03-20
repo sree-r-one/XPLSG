@@ -1,16 +1,11 @@
 name: Docker Build & Push to ACR
 
 on:
-  #   push:
-  #     branches:
-  #       - master
-  #       - feature/*
-  #       - feature/XPLSG-*
-  pull_request:
+  push:
     branches:
-      - master
-      - feature/*
-      - feature/XPLSG-*
+      - develop # ✅ Build images on develop (but do not deploy)
+      - master # ✅ Deploy when merging into master
+  workflow_dispatch: # ✅ Allows manual deployment
 
 jobs:
   build_and_push:
@@ -35,8 +30,10 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:latest
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
             ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
+          cache-to: type=inline
 
       # Auth-Service Docker Image
       - name: Build & Push Auth-Service Docker Image
@@ -46,5 +43,7 @@ jobs:
           file: ./backend/services/auth/Dockerfile
           push: true
           tags: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:latest
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
             ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
+          cache-to: type=inline
