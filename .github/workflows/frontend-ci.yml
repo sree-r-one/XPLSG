@@ -1,46 +1,50 @@
 name: Frontend-CI
 
 on:
-  # push:
-  # branches:
-  # - master
-  # - "feature/**" # This will trigger the workflow for all branches that start with XPLSG-
-  # paths:
-  #   - frontend/** # This will trigger the workflow for all changes in the frontend directory
-  pull_request:
+  push:
     branches:
-      - master
-      - "feature/**" # This will trigger the workflow for all branches that start with XPLSG-
-    # paths:
-    #   - frontend/** # This will trigger the workflow for all changes in the frontend directory
+      - develop
+      - "feature/**" # Run CI for all feature branches
+    paths:
+      - "frontend/**" # Trigger workflow only for frontend changes
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - develop # Run CI for PRs into develop
+    paths:
+      - "frontend/**" # Only trigger if frontend code changes
 
 jobs:
   frontend-tests:
     runs-on: ubuntu-latest
-    steps:
-      # Checkout the code
-      - name: Checkout
-        uses: actions/checkout@v3
 
-      # Setup Node.js
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Setup Node.js with caching for dependencies
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
       # Install dependencies
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           cd frontend
-          npm install
+          npm ci
 
-      # - name: Run Unit Tests with Vitest
-      #   run: |
-      #     cd frontend
-      #     npm run test
+      # Run Unit Tests with Vitest
+      - name: Run Unit Tests
+        run: |
+          cd frontend
+          npm run test
 
       # Build the frontend
-      - name: Build frontend
+      - name: Build Frontend
         run: |
           cd frontend
           npm run build

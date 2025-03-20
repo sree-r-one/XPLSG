@@ -1,33 +1,84 @@
-# Contributing Guidelines
+### **📄 `CONTRIBUTING.md`**
 
-Thank you for considering contributing to this project! To ensure a smooth collaboration, please follow these guidelines:
+# **Contributing Guidelines**
 
-## How to Contribute
+Thank you for considering contributing to **XPLSG**! This project follows a structured **Git branching strategy** to ensure efficient development and smooth CI/CD workflows.
+
+## **🚀 How to Contribute**
 
 1. **Fork the Repository**: Start by forking this repository and creating a local clone.
-2. **Work on a Branch**: Create a feature branch (`feature/<your-feature>` or `fix/<your-bug>`).
-3. **Write Clear Commit Messages**: Follow the [Commit Message Guidelines](#) to maintain consistency.
-4. **Pull Requests**:
-   - Ensure your branch is up to date with the main branch before submitting a pull request.
-   - Provide a clear description of your changes and reference related issues (if any).
+2. **Create a Feature Branch**:
+   - Use the `develop` branch as your base.
+   - Follow the naming convention:
+     ```
+     feature/<your-feature>
+     fix/<your-bug>
+     hotfix/<critical-bug>
+     ```
+3. **Commit Changes Properly**:
+   - Use [Commit Message Guidelines](#commit-message-guidelines).
+   - Keep commits small, meaningful, and atomic.
+4. **Push and Open a PR**:
+   - Push your branch to GitHub.
+   - Open a **Pull Request (PR) into `develop`** (except hotfixes, which go to `master`).
+   - Add a clear **PR description** and reference any issues (`Closes #123`).
+5. **Review and Merge**:
+   - PRs must be **approved by at least one reviewer** before merging.
+   - **CI must pass** before merging.
 
-## Code Style
+## **🔀 Branching Strategy**
 
-- Follow the code style specified in the repository (e.g., linting rules).
-- Use the existing structure for naming conventions and organization.
+This project follows **GitFlow-inspired branching**:
 
-## Reporting Issues
+| **Branch**     | **Purpose**                                          |
+| -------------- | ---------------------------------------------------- |
+| `master` 🏆    | Stable, production-ready code (CI/CD to Production). |
+| `develop` 🛠️   | Active development branch (CI/CD to Staging).        |
+| `feature/*` 🌱 | New features (branched from `develop`).              |
+| `release/*` 🎯 | Staging & testing before merging to `master`.        |
+| `hotfix/*` 🔥  | Critical production fixes (branched from `master`).  |
 
-- Check if the issue is already reported.
-- If not, create a new issue with a descriptive title and relevant details.
+**Creating a new feature branch:**
 
+```sh
+git checkout develop
+git pull origin develop
+git checkout -b feature/add-auth
+git push -u origin feature/add-auth
+```
 
-## Commit Message Guidelines
+**Merging back into `develop`:**
 
-This document defines the standard for writing commit messages to ensure consistency, readability, and collaboration across the team.
+```sh
+git checkout develop
+git merge feature/add-auth
+git push origin develop
+```
 
-### Commit Message Format
-Use the following structure for commit messages:
+## **🛠 Code Style**
+
+- Follow the **project’s linting and formatting rules**.
+- Keep **functionality modular** and **well-documented**.
+- Use **clear variable and function names**.
+
+## **🔧 CI/CD Integration**
+
+✅ **GitHub Actions** automatically runs CI/CD pipelines:
+
+- **Feature branches (`feature/*`)** → CI runs tests **but does NOT deploy**.
+- **Pull Requests to `develop`** → CI must pass before merging.
+- **Merging `develop` to `master`** → Deploys **new production release**.
+
+**To check CI status before merging:**
+
+```sh
+git status
+git pull origin develop
+```
+
+## **📜 Commit Message Guidelines**
+
+Following **Semantic Versioning (SemVer)**, commit messages should follow this format:
 
 ```
 <type>(<scope>): <subject>
@@ -37,91 +88,74 @@ Use the following structure for commit messages:
 <footer>
 ```
 
-#### 1. **Type**
-The type describes the nature of the change. Use one of the following keywords:
+### **1️⃣ Commit Types**
 
-- `feat`: A new feature (e.g., `feat(ui): add user login`)
-- `fix`: A bug fix (e.g., `fix(api): resolve timeout issue`)
-- `docs`: Documentation updates (e.g., `docs(readme): update setup steps`)
-- `style`: Code formatting or style changes (e.g., `style(ui): fix alignment`)
-- `refactor`: Code changes that neither fix a bug nor add a feature.
-- `test`: Adding or updating tests.
-- `chore`: Maintenance tasks (e.g., dependency updates).
-
-#### 2. **Scope** (Optional)
-The scope specifies the area of the codebase being changed, e.g., `auth`, `api`, `ui`, `docs`.
-
-#### 3. **Subject**
-A short, imperative description of the change:
-- Limit to 50 characters.
-- Start with a verb (e.g., `add`, `fix`, `update`).
-- Do not capitalize the first word or add a period at the end.
-
-**Example:** `feat(ui): add drag-and-drop functionality`
-
-#### 4. **Body** (Optional)
-Provide additional context or explanation for the change:
-- Describe **what** and **why**, but not **how**.
-- Wrap text at 72 characters.
-
-**Example:**
-```
-fix(api): resolve response parsing issue
-
-Resolved a bug where API responses were incorrectly parsed, causing
-errors in the frontend display. Added unit tests to cover edge cases.
-```
-
-#### 5. **Footer** (Optional)
-Use to reference issues or note breaking changes:
-- Format for issues: `Closes #<issue-number>`.
-- Format for breaking changes: `BREAKING CHANGE: <description>`.
-
-**Example:**
-```
-feat(auth): add OAuth2.0 support
-
-Implemented OAuth2.0 authentication for user login. Updated the
-frontend to handle third-party login providers.
-
-Closes #123
-BREAKING CHANGE: User sessions are now managed by the new auth system.
-```
+| Type       | Purpose                               | Example                                           |
+| ---------- | ------------------------------------- | ------------------------------------------------- |
+| `feat`     | New feature                           | `feat(auth): add OAuth2.0 login`                  |
+| `fix`      | Bug fix                               | `fix(ui): resolve login form error`               |
+| `docs`     | Documentation changes                 | `docs(readme): update API setup`                  |
+| `style`    | Formatting only (no logic changes)    | `style(css): fix button alignment`                |
+| `refactor` | Code improvement (no feature changes) | `refactor(api): optimize query execution`         |
+| `test`     | Adding or updating tests              | `test(routes): add unit tests for user endpoints` |
+| `chore`    | Dependencies or maintenance           | `chore(deps): update npm packages`                |
 
 ---
 
-### Examples
+## **📝 Example Commit Messages**
 
-#### Feature Addition
-```
+✅ **Feature Addition**
+
+```sh
 feat(ui): add itinerary customization
 
 Users can now customize itineraries with drag-and-drop functionality.
 ```
 
-#### Bug Fix
-```
+✅ **Bug Fix**
+
+```sh
 fix(auth): resolve login redirection issue
 
 Fixed a bug where users were not redirected to the dashboard after a
 successful login.
 ```
 
-#### Documentation Update
-```
+✅ **Documentation Update**
+
+```sh
 docs(api): update endpoint documentation
 
 Added detailed examples and explanations for the itinerary endpoints.
 ```
 
-#### Chore
-```
+✅ **Chore**
+
+```sh
 chore(deps): update npm dependencies
 
 Updated project dependencies to their latest versions for security
 and performance improvements.
 ```
 
----
+## **📢 Reporting Issues**
 
-By following these guidelines, we can maintain a clean and structured project history, enabling better collaboration and easier tracking of changes.
+If you find a bug or have a feature request:
+
+1. **Search existing issues** to avoid duplicates.
+2. **Create a new issue** with:
+   - A **descriptive title**.
+   - **Steps to reproduce** (for bugs).
+   - **Expected vs actual behavior**.
+
+## **✅ Summary**
+
+✔ **Feature branches** are created from `develop`.  
+✔ **Pull Requests must target `develop`**, not `master`.  
+✔ **Commit messages follow Semantic Versioning (SemVer).**  
+✔ **CI/CD checks must pass before merging.**  
+✔ **Hotfixes go directly to `master` and backport to `develop`.**
+
+## **🙏 Thank You for Contributing!**
+
+By following these guidelines, we ensure **a well-structured, scalable, and maintainable project**! 🚀
