@@ -13,7 +13,7 @@ The repository will have the following branches:
 | `master` 🏆      | Stable production branch (CI/CD deploys to production)         |
 | `develop` 🛠️   | Integration branch for new features (CI/CD deploys to staging) |
 | `feature/*` 🌱 | Individual feature branches for development                    |
-| `hotfix/*` 🔥  | Quick fixes applied directly to `main`                         |
+| `hotfix/*` 🔥  | Quick fixes applied directly to `master`                         |
 | `release/*` 🎯 | Pre-production staging (RC releases, final testing)            |
 
 ## **3. Workflow Guidelines**
@@ -48,7 +48,7 @@ git push origin develop
 
 - Used for preparing a production release.
 - Allows final bug fixes and version updates before deployment.
-- Merged into `main` and back into `develop`.
+- Merged into `master` and back into `develop`.
 
 #### **Commands:**
 
@@ -64,10 +64,10 @@ git push -u origin release/v1.0.0
 After validation:
 
 ```sh
-# Merge into main
-git checkout main
+# Merge into master
+git checkout master
 git merge release/v1.0.0
-git push origin main
+git push origin master
 
 # Merge back into develop
 git checkout develop
@@ -78,13 +78,13 @@ git push origin develop
 ### **3.3 Hotfix Branches (`hotfix/*`)**
 
 - Used for urgent fixes in production.
-- Created from `main`, then merged back.
+- Created from `master`, then merged back.
 
 #### **Commands:**
 
 ```sh
-# Create hotfix branch from main
-git checkout -b hotfix/fix-login main
+# Create hotfix branch from master
+git checkout -b hotfix/fix-login master
 
 # Apply the fix and push changes
 git push -u origin hotfix/fix-login
@@ -93,10 +93,10 @@ git push -u origin hotfix/fix-login
 After testing:
 
 ```sh
-# Merge into main
-git checkout main
+# Merge into master
+git checkout master
 git merge hotfix/fix-login
-git push origin main
+git push origin master
 
 # Merge into develop to prevent regressions
 git checkout develop
@@ -109,13 +109,13 @@ git push origin develop
 - **Semantic Versioning** is used (`MAJOR.MINOR.PATCH`).
 - **GitHub Actions** automates deployments:
   - `develop` → Staging environment
-  - `main` → Production environment
+  - `master` → Production environment
 
 ## **5. Summary Workflow**
 
 ```plaintext
                ┌──────────┐
-               │  main    │  🔥 Production-ready
+               │  master    │  🔥 Production-ready
                └────▲─────┘
                     │
            ┌────────┴────────┐
@@ -131,4 +131,4 @@ git push origin develop
 
 ## **6. Conclusion**
 
-This branching strategy provides a structured and scalable approach for maintaining code quality, managing feature releases, and automating deployments for the **XPLSG application**. 🚀
+This branching strategy provides a structured and scalable approach for mastertaining code quality, managing feature releases, and automating deployments for the **XPLSG application**. 🚀
