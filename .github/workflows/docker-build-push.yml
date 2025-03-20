@@ -30,8 +30,9 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
-            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ github.sha }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ github.ref_name }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:commit-${{ github.sha }}
+
           cache-from: type=registry,ref=${{ secrets.ACR_LOGIN_SERVER }}/xplsg-frontend:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
           cache-to: type=inline
 
@@ -43,7 +44,8 @@ jobs:
           file: ./backend/services/auth/Dockerfile
           push: true
           tags: |
-            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
-            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ github.sha }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ github.ref_name }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:commit-${{ github.sha }}
+
           cache-from: type=registry,ref=${{ secrets.ACR_LOGIN_SERVER }}/xplsg-auth-service:${{ startsWith(github.ref, 'refs/heads/master') && 'latest' || 'develop' }}
           cache-to: type=inline
