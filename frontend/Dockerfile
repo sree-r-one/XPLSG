@@ -26,9 +26,9 @@ RUN npm install -g serve
 # Copy built frontend files from the builder stage
 COPY --from=builder /app/dist .
 
-# Set the port for Azure (Azure Web App dynamically assigns PORT)
-ENV PORT 8080
+# Ensure the container runs on Azure's assigned port
+ENV PORT ${PORT:-8080}
 EXPOSE 8080
 
-# Start the static server
-CMD ["serve", "-s", ".", "-l", "8080"]
+# Fix: Dynamically substitute PORT in the serve command
+CMD ["sh", "-c", "serve -s . -l $PORT"]
