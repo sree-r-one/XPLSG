@@ -10,7 +10,7 @@ The repository will have the following branches:
 
 | Branch         | Purpose                                                        |
 | -------------- | -------------------------------------------------------------- |
-| `main` 🏆      | Stable production branch (CI/CD deploys to production)         |
+| `master` 🏆      | Stable production branch (CI/CD deploys to production)         |
 | `develop` 🛠️   | Integration branch for new features (CI/CD deploys to staging) |
 | `feature/*` 🌱 | Individual feature branches for development                    |
 | `hotfix/*` 🔥  | Quick fixes applied directly to `main`                         |
