@@ -1,34 +1,45 @@
-# Stage 1: Build the frontend
+# Stage 1: Build frontend assets
 FROM node:20-alpine AS builder
 
+# Define the working directory
 WORKDIR /app
 
-# Copy package files first for caching
+# Copy package files first to leverage Docker caching
 COPY package.json package-lock.json ./
 
-# Install dependencies properly
+# Install dependencies (clean install ensures exact dependency versioning)
 RUN npm ci
 
-# Copy the entire frontend code
+# Copy remaining source files
 COPY . .
 
-# Build the frontend
+# Build the frontend (Vite default build output is 'dist')
 RUN npm run build
 
-# Stage 2: Use a lightweight web server
+# Stage 2: Lightweight production server
 FROM node:20-alpine
 
+# Create a non-root user for better security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Define working directory
 WORKDIR /usr/src/app
 
-# Install a simple HTTP server
+# Install static file server globally
 RUN npm install -g serve
 
-# Copy built frontend files from the builder stage
-COPY --from=builder /app/dist .
+# Copy built files from the builder stage
+COPY --from=builder /app/dist ./dist
 
-# Fix: Use proper ENV syntax
+# Set environment variables
 ENV PORT=8080
 EXPOSE 8080
 
-# Fix: Use exec form of CMD with explicit variable
-CMD ["sh", "-c", "serve -s . -l ${PORT}"]
+# Change ownership of files to the non-root user
+RUN chown -R appuser:appgroup /usr/src/app
+
+# Run as the non-root user
+USER appuser
+
+# Start server (serving the 'dist' directory explicitly)
+CMD ["sh", "-c", "serve -s dist -l ${PORT}"]
