@@ -26,9 +26,9 @@ RUN npm install -g serve
 # Copy built frontend files from the builder stage
 COPY --from=builder /app/dist .
 
-# Ensure the container runs on Azure's assigned port
-ENV PORT ${PORT:-8080}
+# Fix: Use proper ENV syntax
+ENV PORT=8080
 EXPOSE 8080
 
-# Fix: Dynamically substitute PORT in the serve command
-CMD ["sh", "-c", "serve -s . -l $PORT"]
+# Fix: Use exec form of CMD with explicit variable
+CMD ["sh", "-c", "serve -s . -l ${PORT}"]
