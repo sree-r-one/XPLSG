@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "xplsg-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,7 +17,6 @@
     "@heroicons/react": "^2.2.0",
     "@react-oauth/google": "^0.12.1",
     "flatpickr": "^4.6.13",
-    "frontend": "file:",
     "jwt-decode": "^4.0.0",
     "mapbox-gl": "^3.9.4",
     "react": "^18.3.1",
