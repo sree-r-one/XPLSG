@@ -1,3 +1,5 @@
+This project is deprecated, but the learnings has been carried forward
+
 # Explore Singapore Application
 
 ## Table of Contents
